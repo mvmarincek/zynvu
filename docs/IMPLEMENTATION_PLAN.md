@@ -55,6 +55,6 @@ Apache-2.0 aprovada pelo usuário. Credenciais/domínio de comércio não fornec
   tentativas; revisão visual permanece pendente.
 - Wheel/sdist construídos; instalação em ambiente separado, geração de Blueprint
   offline e `pip check` validados. Saída CLI em UTF-8 inclusive em pipes Windows.
-- GitHub: repositório público `mvmarincek/zynvu` criado. Publicação aguardando
-  autorização `workflow` da credencial; o primeiro push foi recusado pelo GitHub.
+- GitHub: código publicado no repositório público `mvmarincek/zynvu`, com licença
+  Apache-2.0 e workflow de CI para Windows/Linux, Python 3.11/3.13.
 - M3/M4/M5 não iniciados. Não habilitar runtime antes de completar gates da Fase 1.

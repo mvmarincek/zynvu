@@ -1,5 +1,7 @@
 # ZYNVU
 
+[![CI](https://github.com/mvmarincek/zynvu/actions/workflows/ci.yml/badge.svg)](https://github.com/mvmarincek/zynvu/actions/workflows/ci.yml)
+
 **Advisor local de arquitetura de IA — versão inicial 0.1.0.**
 
 Descreva um agente, revise os requisitos e receba combinações de modelos que
