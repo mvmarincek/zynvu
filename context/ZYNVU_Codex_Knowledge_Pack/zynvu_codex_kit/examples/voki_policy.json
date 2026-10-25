@@ -1,0 +1,14 @@
+{
+  "project": "voki",
+  "allowed_interface_executors": [
+    "hardware_hid"
+  ],
+  "denied_interface_executors": [
+    "playwright",
+    "selenium",
+    "pyautogui",
+    "native_os"
+  ],
+  "screenshot_capture": "separate_required_capability",
+  "note": "Consumer policy; not a ZYNVU default"
+}

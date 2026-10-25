@@ -1,0 +1,17 @@
+{
+  "project": "generic-agent",
+  "allowed_interface_executors": [
+    "api_mcp",
+    "playwright",
+    "selenium",
+    "pyautogui",
+    "native_os",
+    "hardware_hid"
+  ],
+  "denied_interface_executors": [],
+  "require_confirmation_for": [
+    "external_messages",
+    "deployments",
+    "destructive_actions"
+  ]
+}

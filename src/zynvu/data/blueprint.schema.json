@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ZYNVU Architecture Blueprint",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project",
+    "hardware",
+    "requirements",
+    "recommendations",
+    "policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "hardware": {
+      "type": "object",
+      "required": [
+        "source",
+        "observed_at",
+        "ram_gb"
+      ],
+      "properties": {
+        "source": {
+          "enum": [
+            "detected",
+            "fixture"
+          ]
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "os": {
+          "type": "string"
+        },
+        "cpu": {
+          "type": "string"
+        },
+        "ram_gb": {
+          "type": "number",
+          "minimum": 0
+        },
+        "gpu": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vram_gb": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "shared_memory": {
+          "type": "boolean"
+        }
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "required": [
+        "capabilities",
+        "privacy"
+      ],
+      "properties": {
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "privacy": {
+          "enum": [
+            "local_only",
+            "hybrid_opt_in"
+          ]
+        },
+        "user_goal": {
+          "type": "string"
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "profile",
+          "models",
+          "reasons",
+          "status"
+        ],
+        "properties": {
+          "profile": {
+            "enum": [
+              "balanced",
+              "fastest",
+              "highest_quality"
+            ]
+          },
+          "models": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "catalog_id"
+              ],
+              "properties": {
+                "role": {
+                  "type": "string"
+                },
+                "catalog_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "enum": [
+              "candidate",
+              "verified",
+              "not_feasible"
+            ]
+          },
+          "estimated_peak_ram_gb": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "estimated_peak_vram_gb": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": [
+        "allowed_interface_executors",
+        "denied_interface_executors"
+      ],
+      "properties": {
+        "allowed_interface_executors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "denied_interface_executors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "catalog_version": {
+      "type": "string"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

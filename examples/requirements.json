@@ -1,0 +1,10 @@
+{
+  "user_goal": "Quero conversar e programar localmente",
+  "capabilities": ["conversation", "coding"],
+  "privacy": "local_only",
+  "context_tokens": 4096,
+  "concurrent": false,
+  "agents": 1,
+  "allowed_interface_executors": ["api_mcp"],
+  "denied_interface_executors": []
+}

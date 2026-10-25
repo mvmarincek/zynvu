@@ -1,0 +1,14 @@
+{
+  "source": "fixture",
+  "observed_at": "2026-10-25T00:00:00Z",
+  "os": "Windows",
+  "architecture": "AMD64",
+  "cpu": "Simulated CPU-only VM",
+  "ram_gb": 8,
+  "available_ram_gb": 5,
+  "gpu": null,
+  "vram_gb": null,
+  "disk_free_gb": 32,
+  "runtimes": [],
+  "warnings": ["Perfil simulado para reprodução; não representa diagnóstico real."]
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "project": {
+    "name": "example-agent",
+    "description": "Illustrative fixture, not a real diagnosis"
+  },
+  "hardware": {
+    "source": "fixture",
+    "observed_at": "2026-10-25T00:00:00Z",
+    "os": "Windows",
+    "cpu": "example-cpu",
+    "ram_gb": 16,
+    "gpu": null,
+    "vram_gb": null,
+    "shared_memory": false
+  },
+  "requirements": {
+    "capabilities": [
+      "conversation",
+      "coding",
+      "memory",
+      "mcp"
+    ],
+    "privacy": "local_only",
+    "user_goal": "Agent that helps code and remembers prior work"
+  },
+  "recommendations": [
+    {
+      "profile": "balanced",
+      "models": [],
+      "reasons": [
+        "No catalog benchmarks supplied; run real discovery before recommending models"
+      ],
+      "status": "candidate",
+      "estimated_peak_ram_gb": null,
+      "estimated_peak_vram_gb": null
+    }
+  ],
+  "policy": {
+    "allowed_interface_executors": [
+      "api_mcp",
+      "playwright"
+    ],
+    "denied_interface_executors": []
+  },
+  "catalog_version": "unverified",
+  "warnings": [
+    "Illustrative fixture only; no actual model/hardware validation"
+  ]
+}

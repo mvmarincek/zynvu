@@ -1,0 +1,5 @@
+1) Extract this ZIP into your GitHub working directory.
+2) Open the repository with Codex.
+3) Paste the complete contents of CODEX_MASTER_PROMPT.md as ONE prompt.
+4) Codex must read all other knowledge files before implementation.
+5) No GitHub repository or payment system has been created/deployed by this ZIP.
