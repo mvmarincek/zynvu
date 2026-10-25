@@ -32,6 +32,11 @@ def emit(data: Any, path: str | None) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Windows redirected stdout can default to a legacy code page. JSON is UTF-8.
+    for stream in [sys.stdout, sys.stderr]:
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(prog="zynvu", description="Advisor local de arquitetura de IA")
     commands = parser.add_subparsers(dest="command", required=True)
     diagnostic = commands.add_parser("diagnose", help="Diagnosticar hardware local")

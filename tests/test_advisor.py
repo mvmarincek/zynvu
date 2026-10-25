@@ -1,5 +1,6 @@
 import copy
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -170,6 +171,16 @@ def test_cli_runs_as_module():
     )
     assert result.returncode == 0
     assert len(json.loads(result.stdout)["entries"]) == 6
+
+
+def test_cli_json_is_utf8_with_legacy_pipe_encoding():
+    result = subprocess.run(
+        [sys.executable, "-m", "zynvu", "parse", "Assistente para português e 日本語"],
+        capture_output=True,
+        env={**os.environ, "PYTHONIOENCODING": "ascii"},
+    )
+    assert result.returncode == 0
+    assert "日本語" in json.loads(result.stdout.decode("utf-8"))["user_goal"]
 
 
 def test_offline_sdk_vm_fixture(monkeypatch):

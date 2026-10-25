@@ -50,8 +50,11 @@ Apache-2.0 aprovada pelo usuário. Credenciais/domínio de comércio não fornec
   não declarar o gate completo da Fase 1 atingido.
 - M2 inicial: interface nativa Tkinter e API local autenticada implementadas;
   instalador desktop, comparação visual avançada e acessibilidade pendentes.
-- 48 testes, lint e typecheck passaram no Windows. Diagnóstico real e exportação
+- 49 testes, lint e typecheck passaram no Windows. Diagnóstico real e exportação
   CLI validados. Captura visual da janela falhou por timeout da ferramenta em duas
   tentativas; revisão visual permanece pendente.
-- GitHub: usuário selecionou `mvmarincek`; publicar esta entrega inicial validada.
+- Wheel/sdist construídos; instalação em ambiente separado, geração de Blueprint
+  offline e `pip check` validados. Saída CLI em UTF-8 inclusive em pipes Windows.
+- GitHub: repositório público `mvmarincek/zynvu` criado. Publicação aguardando
+  autorização `workflow` da credencial; o primeiro push foi recusado pelo GitHub.
 - M3/M4/M5 não iniciados. Não habilitar runtime antes de completar gates da Fase 1.
