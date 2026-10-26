@@ -12,8 +12,9 @@
 - Perfis podem coincidir quando o catálogo não oferece três combinações distintas.
 - Parser local por palavras-chave é heurístico: requisitos estruturados explícitos
   prevalecem e devem ser revisados. Não existe chamada oculta a LLM/cloud.
-- Catálogo oficial inicial serve conversação e código. Outras capacidades exigem
-  expansão verificada; não serão anunciadas como implementadas.
+- Catálogo inicial serve conversação e código; a versão 0.3 adiciona planejamento
+  de transcrição Whisper multilíngue. Visão e síntese de voz ainda exigem expansão.
+  Memória de ASR usa tabela publicada com margem explícita, sem benchmark local.
 - Interface inicial em Tkinter substituída pelo ZYNVU Studio a pedido do usuário:
   HTML/CSS/JavaScript locais, responsivos e sem build obrigatório. Servidor Python
   reutiliza o SDK; API de integração permanece independente. Instalador Tauri futuro.

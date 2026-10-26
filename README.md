@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/mvmarincek/zynvu/actions/workflows/ci.yml/badge.svg)](https://github.com/mvmarincek/zynvu/actions/workflows/ci.yml)
 
-**Advisor local de arquitetura de IA — versão 0.2.0, ZYNVU Studio.**
+**Advisor local de arquitetura de IA — versão 0.3.0, ZYNVU Studio.**
 
 Descreva um agente, revise os requisitos e receba combinações de modelos que
 respeitam o hardware informado ou diagnosticado. Exporta Blueprint JSON e relatório
@@ -72,6 +72,8 @@ Não é um servidor público ou serviço de produção. Não exponha a porta por
 - Extração heurística local de requisitos, editáveis em JSON.
 - Seis entradas oficiais Qwen2.5/Qwen2.5-Coder Q4_K_M (0.5B, 1.5B, 7B), fixadas
   por revisão e hashes dos arquivos, para conversa e código.
+- Três candidatos Whisper multilíngues (tiny/base/small) via whisper.cpp para
+  planejar transcrição, com estimativa própria de RAM e artefatos fixados por hash.
 - Filtros de OS/arquitetura/licença/contexto/runtime/tool calling, orçamento de
   memória e disco, cargas sequenciais/concorrentes e múltiplos agentes.
 - Três perfis determinísticos, no-fit explícito, Blueprint validado no schema do kit.
@@ -88,10 +90,14 @@ GPU. Velocidade/qualidade são heurísticas de tamanho/memória, **não benchmar
 Os três perfis podem coincidir. Parser por palavras-chave pode interpretar negações
 incorretamente; revise o JSON. O catálogo não prova aptidão para todo idioma/tarefa.
 
-Visão, voz, embeddings, validação de tool calling, conectores autenticados,
+Visão, síntese de voz, embeddings, validação de tool calling, conectores autenticados,
 memória persistente, instalação/execução de agentes, treinamento e comércio estão
 no roadmap. Memória/MCP aparecem apenas como plano, nunca como execução disponível.
 Nenhuma cobrança, checkout ou implantação de produção foi configurada.
+
+Transcrição é apenas planejamento: não grava nem processa áudio. A estimativa
+considera blocos de até 30 segundos e memória publicada acrescida de margem;
+qualidade em português e velocidade ainda não foram medidas localmente.
 
 ## Desenvolvimento
 

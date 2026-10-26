@@ -47,6 +47,50 @@ def test_shared_memory_does_not_expand_budget():
     assert baseline == advise(req, hardware(4, shared_memory=True, vram_gb=16))["recommendations"]
 
 
+@pytest.mark.parametrize("ram,available", [(4, 2), (8, 3), (24, 7)])
+def test_conversation_and_speech_fit_with_explicit_cpu_budgets(ram, available):
+    req = Requirements("conversa e transcrição", capabilities=["conversation", "asr"])
+    result = advise(req, hardware(ram, available_ram_gb=available))
+    for rec in result["recommendations"]:
+        assert rec["status"] == "candidate"
+        assert {m["role"] for m in rec["models"]} == {"conversation", "asr"}
+        assert rec["resource_budget"]["workload_ram_gb"] <= available - 0.5
+    assert any("30 s" in warning for warning in result["warnings"])
+
+
+def test_speech_budget_is_independent_of_chat_context_but_scales_with_agents():
+    model = next(e for e in load_catalog()["entries"] if "asr" in e["roles"])
+    short = Requirements("transcrever", capabilities=["asr"], context_tokens=4096)
+    long = Requirements("transcrever", capabilities=["asr"], context_tokens=131072)
+    assert estimate([model], hardware(), short) == estimate([model], hardware(), long)
+    assert advise(long, hardware())["recommendations"][0]["status"] == "candidate"
+    long.agents = 4
+    assert (
+        estimate([model], hardware(), long)["workload_ram_gb"]
+        > estimate([model], hardware(), short)["workload_ram_gb"]
+    )
+
+
+def test_speech_respects_license_runtime_and_resource_filters():
+    for req, hw in [
+        (Requirements("voz", capabilities=["asr"], allowed_licenses=["apache-2.0"]), hardware()),
+        (Requirements("voz", capabilities=["asr"], require_installed=True), hardware()),
+        (Requirements("voz", capabilities=["asr"]), hardware(available_ram_gb=0.6)),
+    ]:
+        assert advise(req, hw)["recommendations"][0]["status"] == "not_feasible"
+    no_disk = hardware()
+    no_disk.disk_free_gb = 0
+    assert (
+        advise(Requirements("voz", capabilities=["asr"]), no_disk)["recommendations"][0]["status"]
+        == "not_feasible"
+    )
+    req = Requirements("voz", capabilities=["asr"], require_installed=True)
+    assert (
+        advise(req, hardware(runtimes=["whisper.cpp"]))["recommendations"][0]["status"]
+        == "candidate"
+    )
+
+
 def test_no_fit_is_not_a_fake_recommendation():
     for req, hw in [
         (parse_goal("conversar"), hardware(1)),
@@ -170,7 +214,7 @@ def test_cli_runs_as_module():
         [sys.executable, "-m", "zynvu", "catalog"], capture_output=True, text=True
     )
     assert result.returncode == 0
-    assert len(json.loads(result.stdout)["entries"]) == 6
+    assert len(json.loads(result.stdout)["entries"]) == 9
 
 
 def test_cli_json_is_utf8_with_legacy_pipe_encoding():

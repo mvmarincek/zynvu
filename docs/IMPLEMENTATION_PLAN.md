@@ -84,3 +84,16 @@ Apache-2.0 aprovada pelo usuário. Credenciais/domínio de comércio não fornec
 - Validação com diagnóstico local e contexto de 32K encontrou candidatos para
   conversa após retirar visão/transcrição. Memória e MCP continuam apenas planos.
   A matriz automatizada de RAM inclui 4/8 GiB; não equivale a benchmark de inferência.
+
+## Catálogo de transcrição — versão 0.3.0
+
+- Nove candidatos: seis de conversa/código e três Whisper multilíngues para ASR.
+  Artefatos, licença MIT e memória publicada consultados em fontes primárias.
+- Estimador específico de áudio, contexto de conversa desacoplado, buffers por
+  agente e filtros de licença/runtime/RAM/disco. As margens continuam hipóteses.
+- Studio validado com diagnóstico real: conversa + transcrição gera três perfis;
+  catálogo distingue GGML de GGUF e áudio de contexto textual. Sem erros de console.
+- 61 testes passaram, incluindo conversa + áudio em perfis simulados de 4/8 GiB,
+  contexto de ASR independente e falhas por recursos/licença/runtime.
+- Visão (SmolVLM) pesquisada em `research/MULTIMODAL_CATALOG.md`, ainda pendente de
+  estimador visual. TTS continua pendente. O gate completo de M1 não foi atingido.

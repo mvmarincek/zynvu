@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0 — 2026-10-26
+
+- Catálogo com nove candidatos: conversa, código e transcrição multilíngue.
+- Whisper tiny/base/small com fontes, licença MIT e hashes dos artefatos.
+- Estimativa de ASR separada da janela de contexto e do KV dos modelos de texto.
+- Studio distingue transcrição de síntese de voz e explica o escopo das estimativas.
+- Recuperação explícita de planos com capacidades ausentes no catálogo.
+- Nenhum modelo instalado, baixado ou executado; visão e TTS continuam pendentes.
+
 ## 0.2.0 — 2026-10-26
 
 - ZYNVU Studio substitui a interface Tkinter por frontend web local responsivo.

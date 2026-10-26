@@ -144,20 +144,19 @@ function renderCapabilities() {
     button.setAttribute("aria-pressed", String(selected));
   });
   const notes = [];
-  if (
-    state.capabilities.has("vision") ||
-    state.capabilities.has("asr") ||
-    state.capabilities.has("tts")
-  )
+  if (state.capabilities.has("vision") || state.capabilities.has("tts"))
+    notes.push("Visão e síntese de voz ainda não têm candidatos no catálogo.");
+  if (state.capabilities.has("asr"))
     notes.push(
-      "Visão e voz ainda não têm candidatos: a análise indicará essa limitação.",
+      "Transcrição tem candidatos Whisper multilíngues. Planejamento em blocos de até 30 s; sem capturar ou processar áudio nesta fase.",
     );
   if (state.capabilities.has("memory") || state.capabilities.has("mcp"))
     notes.push(
       "Memória e MCP entram como plano; sua execução chega na Fase 2.",
     );
   $("capability-note").textContent =
-    notes.join(" ") || "Conversa e código têm modelos no catálogo atual.";
+    notes.join(" ") ||
+    "Conversa, código e transcrição têm modelos no catálogo atual.";
 }
 function updateCount() {
   $("char-count").textContent =
@@ -306,7 +305,7 @@ function renderResults() {
       : "Confira os motivos nos perfis e no Blueprint: memória disponível, disco, contexto, licença ou runtime podem limitar a seleção.";
   $("architecture-summary").innerHTML = `
     <div><h3>${icon("box")} ${title}</h3><p>${escapeHTML(description)}</p>
-    ${!viable && missing.length && remaining.some((role) => ["conversation", "coding"].includes(role)) ? `<button class="primary-button" id="analyze-supported">Analisar sem ${escapeHTML(missing.map((role) => labels[role]).join(" e "))} ${icon("arrow")}</button>` : ""}</div>
+    ${!viable && missing.length && remaining.some((role) => ["conversation", "coding", "asr"].includes(role)) ? `<button class="primary-button" id="analyze-supported">Analisar sem ${escapeHTML(missing.map((role) => labels[role]).join(" e "))} ${icon("arrow")}</button>` : ""}</div>
     <button class="primary-button" id="see-blueprint">Ver Blueprint ${icon("arrow")}</button>`;
   $("see-blueprint").addEventListener("click", () => showView("blueprint"));
   $("analyze-supported")?.addEventListener("click", () => {
@@ -352,10 +351,10 @@ function catalogCard(model) {
       <span class="badge outline">${escapeHTML(model.license.toUpperCase())}</span>
     </div>
     <h2>${escapeHTML(model.name.replace("Qwen/", "").replace("-Instruct", ""))}</h2>
-    <p class="catalog-subtitle">${model.roles.map((role) => escapeHTML(labels[role] || role)).join(" · ")} · Instruct</p>
+    <p class="catalog-subtitle">${model.roles.map((role) => escapeHTML(labels[role] || role)).join(" · ")} · ${model.roles.includes("asr") ? "Multilíngue · português" : "Instruct"}</p>
     <dl class="catalog-facts">
-      <div><dt>PESOS GGUF</dt><dd>${(model.weight_bytes / 1024 ** 3).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} GiB</dd></div>
-      <div><dt>CONTEXTO MÁXIMO</dt><dd>${(model.max_context / 1024).toLocaleString("pt-BR")}K tokens</dd></div>
+      <div><dt>PESOS ${escapeHTML(model.format || "GGUF")}</dt><dd>${(model.weight_bytes / 1024 ** 3).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} GiB</dd></div>
+      <div><dt>${model.max_context == null ? "ÁUDIO PLANEJADO" : "CONTEXTO MÁXIMO"}</dt><dd>${model.max_context == null ? "Blocos de até 30 s" : `${(model.max_context / 1024).toLocaleString("pt-BR")}K tokens`}</dd></div>
       <div><dt>QUANTIZAÇÃO</dt><dd>${escapeHTML(model.quantization)}</dd></div>
       <div><dt>RUNTIME</dt><dd>${escapeHTML(model.runtime)}</dd></div>
     </dl>
@@ -367,7 +366,7 @@ function catalogCard(model) {
 function renderCatalog() {
   $("catalog-count").textContent = state.catalog.length;
   $("catalog-summary").textContent =
-    `${state.catalog.length} modelos · Conversa e programação`;
+    `${state.catalog.length} modelos · Conversa, programação e transcrição`;
   $("catalog-grid").innerHTML = state.catalog.map(catalogCard).join("");
 }
 function download(content, name, type) {

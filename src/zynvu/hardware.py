@@ -27,7 +27,11 @@ def diagnose() -> HardwareProfile:
         disk_free_gb=round(shutil.disk_usage(".").free / GIB, 3),
         provenance={"ram": "psutil.virtual_memory", "disk": "cwd volume", "cpu": "platform"},
     )
-    for runtime, executable in [("llama.cpp", "llama-cli"), ("ollama", "ollama")]:
+    for runtime, executable in [
+        ("llama.cpp", "llama-cli"),
+        ("ollama", "ollama"),
+        ("whisper.cpp", "whisper-cli"),
+    ]:
         if shutil.which(executable):
             profile.runtimes.append(runtime)
     profile.provenance["runtimes"] = "PATH discovery only; versions not validated"

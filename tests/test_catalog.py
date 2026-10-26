@@ -21,5 +21,17 @@ def test_catalog_has_consistent_verified_artifact_metadata():
         assert entry["weight_bytes"] == sum(part["bytes"] for part in entry["artifacts"])
         assert len(entry["revision"]) == 40
         assert all(len(part["sha256"]) == 64 for part in entry["artifacts"])
-        assert 0 < entry["weight_bytes"] < entry["parameters_b"] * 1024**3
-        assert entry["license"] == "apache-2.0"
+        assert 0 < entry["weight_bytes"] < entry["parameters_b"] * 4 * 1024**3
+        assert entry["license"] in {"apache-2.0", "mit"}
+
+
+def test_speech_models_are_multilingual_and_have_separate_memory_provenance():
+    speech = [entry for entry in load_catalog()["entries"] if "asr" in entry["roles"]]
+    assert len(speech) == 3
+    for entry in speech:
+        assert "pt" in entry["languages"]
+        assert ".en" not in entry["artifacts"][0]["file"]
+        assert entry["max_context"] is None
+        assert entry["memory_estimator"] == "published_asr"
+        assert entry["published_memory_mb"] > entry["weight_bytes"] / 1_000_000
+        assert entry["memory_source"].startswith("https://github.com/ggml-org/whisper.cpp/")

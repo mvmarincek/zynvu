@@ -1,6 +1,6 @@
 {
-  "version": "2026-10-25.1",
-  "retrieved_at": "2026-10-25T19:15:27.684975+00:00",
+  "version": "2026-10-26.1",
+  "retrieved_at": "2026-10-26T22:36:29.916285+00:00",
   "runtime_source": "https://github.com/ggml-org/llama.cpp",
   "entries": [
     {
@@ -245,6 +245,159 @@
           "bytes": 4683073536,
           "sha256": "509287f78cb4d4cf6b3843734733b914b2c158e43e22a7f4bf5e963800894d3c"
         }
+      ],
+      "verification": "publisher_metadata; no local inference benchmark"
+    },
+    {
+      "id": "whisper-tiny-ggml",
+      "name": "Whisper tiny · multilíngue",
+      "roles": [
+        "asr"
+      ],
+      "parameters_b": 0.039,
+      "runtime": "whisper.cpp",
+      "license": "mit",
+      "quantization": "F16/F32",
+      "format": "GGML",
+      "weight_bytes": 77691713,
+      "max_context": null,
+      "os": [
+        "Windows",
+        "Linux",
+        "Darwin"
+      ],
+      "architectures": [
+        "AMD64",
+        "x86_64",
+        "arm64",
+        "aarch64"
+      ],
+      "tool_calling_verified": false,
+      "source": "https://huggingface.co/ggerganov/whisper.cpp/tree/5359861c739e955e79d9a303bcbc70fb988958b1",
+      "config_source": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/README.md",
+      "license_source": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/LICENSE",
+      "runtime_source": "https://github.com/ggml-org/whisper.cpp/blob/231638a0717b7822784297e5980965ffcec05810/README.md",
+      "revision": "5359861c739e955e79d9a303bcbc70fb988958b1",
+      "artifacts": [
+        {
+          "file": "ggml-tiny.bin",
+          "bytes": 77691713,
+          "sha256": "be07e048e1e599ad46341c8d2a135645097a538221678b7acdd1b1919c6e1b21"
+        }
+      ],
+      "memory_estimator": "published_asr",
+      "published_memory_mb": 273,
+      "memory_source": "https://github.com/ggml-org/whisper.cpp/blob/231638a0717b7822784297e5980965ffcec05810/README.md#memory-usage",
+      "languages": [
+        "multilingual",
+        "pt"
+      ],
+      "planning_notes": [
+        "Transcrição multilíngue; qualidade em português não medida localmente.",
+        "Estimativa para áudio em blocos de até 30 s, uma entrada por agente; não cobre carregar gravações inteiras ou arquivos arbitrariamente grandes em RAM.",
+        "Transcrição não inclui síntese de voz, microfone ou execução de comandos."
+      ],
+      "verification": "publisher_metadata; no local inference benchmark"
+    },
+    {
+      "id": "whisper-base-ggml",
+      "name": "Whisper base · multilíngue",
+      "roles": [
+        "asr"
+      ],
+      "parameters_b": 0.074,
+      "runtime": "whisper.cpp",
+      "license": "mit",
+      "quantization": "F16/F32",
+      "format": "GGML",
+      "weight_bytes": 147951465,
+      "max_context": null,
+      "os": [
+        "Windows",
+        "Linux",
+        "Darwin"
+      ],
+      "architectures": [
+        "AMD64",
+        "x86_64",
+        "arm64",
+        "aarch64"
+      ],
+      "tool_calling_verified": false,
+      "source": "https://huggingface.co/ggerganov/whisper.cpp/tree/5359861c739e955e79d9a303bcbc70fb988958b1",
+      "config_source": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/README.md",
+      "license_source": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/LICENSE",
+      "runtime_source": "https://github.com/ggml-org/whisper.cpp/blob/231638a0717b7822784297e5980965ffcec05810/README.md",
+      "revision": "5359861c739e955e79d9a303bcbc70fb988958b1",
+      "artifacts": [
+        {
+          "file": "ggml-base.bin",
+          "bytes": 147951465,
+          "sha256": "60ed5bc3dd14eea856493d334349b405782ddcaf0028d4b5df4088345fba2efe"
+        }
+      ],
+      "memory_estimator": "published_asr",
+      "published_memory_mb": 388,
+      "memory_source": "https://github.com/ggml-org/whisper.cpp/blob/231638a0717b7822784297e5980965ffcec05810/README.md#memory-usage",
+      "languages": [
+        "multilingual",
+        "pt"
+      ],
+      "planning_notes": [
+        "Transcrição multilíngue; qualidade em português não medida localmente.",
+        "Estimativa para áudio em blocos de até 30 s, uma entrada por agente; não cobre carregar gravações inteiras ou arquivos arbitrariamente grandes em RAM.",
+        "Transcrição não inclui síntese de voz, microfone ou execução de comandos."
+      ],
+      "verification": "publisher_metadata; no local inference benchmark"
+    },
+    {
+      "id": "whisper-small-ggml",
+      "name": "Whisper small · multilíngue",
+      "roles": [
+        "asr"
+      ],
+      "parameters_b": 0.244,
+      "runtime": "whisper.cpp",
+      "license": "mit",
+      "quantization": "F16/F32",
+      "format": "GGML",
+      "weight_bytes": 487601967,
+      "max_context": null,
+      "os": [
+        "Windows",
+        "Linux",
+        "Darwin"
+      ],
+      "architectures": [
+        "AMD64",
+        "x86_64",
+        "arm64",
+        "aarch64"
+      ],
+      "tool_calling_verified": false,
+      "source": "https://huggingface.co/ggerganov/whisper.cpp/tree/5359861c739e955e79d9a303bcbc70fb988958b1",
+      "config_source": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/README.md",
+      "license_source": "https://github.com/openai/whisper/blob/86098128c0b4f24f0e2aa2994de830614b474227/LICENSE",
+      "runtime_source": "https://github.com/ggml-org/whisper.cpp/blob/231638a0717b7822784297e5980965ffcec05810/README.md",
+      "revision": "5359861c739e955e79d9a303bcbc70fb988958b1",
+      "artifacts": [
+        {
+          "file": "ggml-small.bin",
+          "bytes": 487601967,
+          "sha256": "1be3a9b2063867b937e64e2ec7483364a79917e157fa98c5d94b5c1fffea987b"
+        }
+      ],
+      "memory_estimator": "published_asr",
+      "published_memory_mb": 852,
+      "memory_source": "https://github.com/ggml-org/whisper.cpp/blob/231638a0717b7822784297e5980965ffcec05810/README.md#memory-usage",
+      "languages": [
+        "multilingual",
+        "pt"
+      ],
+      "planning_notes": [
+        "Transcrição multilíngue; qualidade em português não medida localmente.",
+        "Estimativa para áudio em blocos de até 30 s, uma entrada por agente; não cobre carregar gravações inteiras ou arquivos arbitrariamente grandes em RAM.",
+        "Transcrição não inclui síntese de voz, microfone ou execução de comandos."
       ],
       "verification": "publisher_metadata; no local inference benchmark"
     }

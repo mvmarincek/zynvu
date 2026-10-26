@@ -16,6 +16,15 @@ MODEL_ROLES = {"conversation", "coding", "vision", "asr", "tts"}
 
 def model_memory(model: dict[str, Any], context: int) -> dict[str, float]:
     weights = model["weight_bytes"] / GIB
+    if model.get("memory_estimator") == "published_asr":
+        # Upstream MB converted as decimal; margin and input reserve are assumptions.
+        total = max(weights, model["published_memory_mb"] * 1_000_000 / GIB) * 1.5 + 0.25
+        return {
+            "weights_gb": weights,
+            "kv_gb": 0.0,
+            "buffers_gb": total - weights,
+            "total_gb": total,
+        }
     kv = 2 * model["layers"] * model["kv_heads"] * model["head_dim"] * context * 2 / GIB
     buffers = max(0.25, weights * 0.20)
     return {
@@ -35,8 +44,11 @@ def estimate(
         key: model_memory(model, requirements.context_tokens) for key, model in unique.items()
     }
     stages = [
-        c["weights_gb"] + c["buffers_gb"] + c["kv_gb"] * requirements.agents
-        for c in components.values()
+        c["weights_gb"]
+        + c["buffers_gb"]
+        * (requirements.agents if unique[key].get("memory_estimator") == "published_asr" else 1)
+        + c["kv_gb"] * requirements.agents
+        for key, c in components.items()
     ]
     model_peak = sum(stages) if requirements.concurrent else max(stages, default=0)
     overhead = 0.5 + (0.25 if "memory" in requirements.capabilities else 0)
@@ -70,9 +82,13 @@ def incompatibilities(
         reasons.append("arquitetura incompatível")
     if model["license"] not in req.allowed_licenses:
         reasons.append("licença não permitida")
-    if req.context_tokens > model["max_context"]:
+    if model["max_context"] is not None and req.context_tokens > model["max_context"]:
         reasons.append("contexto excede limite do modelo")
-    if req.requires_tool_calling and not model["tool_calling_verified"]:
+    if (
+        req.requires_tool_calling
+        and set(model["roles"]) & {"conversation", "coding"}
+        and not model["tool_calling_verified"]
+    ):
         reasons.append("tool calling não verificado")
     if req.require_installed and model["runtime"] not in hardware.runtimes:
         reasons.append("runtime ausente")
@@ -156,6 +172,8 @@ def advise(
         )
         if required_runtimes:
             reasons.append("Instalação futura necessária: " + ", ".join(required_runtimes))
+        for model in {m["id"]: m for m in chosen["models"]}.values():
+            reasons.extend(model.get("planning_notes", []))
         recommendations.append(
             {
                 "profile": profile,
@@ -181,6 +199,12 @@ def advise(
         "Requisitos extraídos do texto devem ser revisados; use entrada estruturada para precisão.",
         "Nenhum modelo é baixado, instalado ou executado pelo Advisor.",
     ] + hardware.warnings
+    if "asr" in requirements.capabilities:
+        warnings.append(
+            "Áudio: RAM publicada pelo whisper.cpp acrescida de 50% e 0,25 GiB por entrada; "
+            "hipótese de planejamento em blocos de até 30 s, sem benchmark local. "
+            "A janela de contexto de conversa não se aplica à transcrição."
+        )
     if hardware.disk_free_gb is None:
         warnings.append("Disco livre desconhecido: confirmar espaço antes de provisionar.")
     if "mcp" in requirements.capabilities:

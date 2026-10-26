@@ -34,6 +34,66 @@ def select_weights(files: list[dict]) -> list[dict]:
     return sorted(shards, key=lambda item: item["rfilename"])
 
 
+def speech_entries() -> list[dict]:
+    """Read publisher metadata only; the multilingual models are not downloaded."""
+    repo = "ggerganov/whisper.cpp"
+    info = fetch(f"https://huggingface.co/api/models/{repo}?blobs=true")
+    if info.get("cardData", {}).get("license") != "mit":
+        raise ValueError("Review Whisper artifact license")
+    runtime_revision = "231638a0717b7822784297e5980965ffcec05810"
+    upstream_revision = "86098128c0b4f24f0e2aa2994de830614b474227"
+    runtime_source = f"https://github.com/ggml-org/whisper.cpp/blob/{runtime_revision}/README.md"
+    entries = []
+    for size, parameters, memory_mb in [
+        ("tiny", 0.039, 273),
+        ("base", 0.074, 388),
+        ("small", 0.244, 852),
+    ]:
+        weight = next(w for w in info["siblings"] if w["rfilename"] == f"ggml-{size}.bin")
+        entries.append(
+            {
+                "id": f"whisper-{size}-ggml",
+                "name": f"Whisper {size} · multilíngue",
+                "roles": ["asr"],
+                "parameters_b": parameters,
+                "runtime": "whisper.cpp",
+                "license": "mit",
+                "quantization": "F16/F32",
+                "format": "GGML",
+                "weight_bytes": weight["size"],
+                "max_context": None,
+                "os": ["Windows", "Linux", "Darwin"],
+                "architectures": ["AMD64", "x86_64", "arm64", "aarch64"],
+                "tool_calling_verified": False,
+                "source": f"https://huggingface.co/{repo}/tree/{info['sha']}",
+                "config_source": f"https://github.com/openai/whisper/blob/{upstream_revision}/README.md",
+                "license_source": f"https://github.com/openai/whisper/blob/{upstream_revision}/LICENSE",
+                "runtime_source": runtime_source,
+                "revision": info["sha"],
+                "artifacts": [
+                    {
+                        "file": weight["rfilename"],
+                        "bytes": weight["size"],
+                        "sha256": weight["lfs"]["sha256"],
+                    }
+                ],
+                "memory_estimator": "published_asr",
+                "published_memory_mb": memory_mb,
+                "memory_source": runtime_source + "#memory-usage",
+                "languages": ["multilingual", "pt"],
+                "planning_notes": [
+                    "Transcrição multilíngue; qualidade em português não medida localmente.",
+                    "Estimativa para áudio em blocos de até 30 s, uma entrada por agente; "
+                    "não cobre carregar gravações inteiras ou arquivos "
+                    "arbitrariamente grandes em RAM.",
+                    "Transcrição não inclui síntese de voz, microfone ou execução de comandos.",
+                ],
+                "verification": "publisher_metadata; no local inference benchmark",
+            }
+        )
+    return entries
+
+
 def main() -> None:
     entries = []
     for family, roles in [("Qwen2.5", ["conversation"]), ("Qwen2.5-Coder", ["coding"])]:
@@ -81,8 +141,9 @@ def main() -> None:
                     "verification": "publisher_metadata; no local inference benchmark",
                 }
             )
+    entries.extend(speech_entries())
     payload = {
-        "version": "2026-10-25.1",
+        "version": "2026-10-26.1",
         "retrieved_at": datetime.now(UTC).isoformat(),
         "runtime_source": "https://github.com/ggml-org/llama.cpp",
         "entries": entries,

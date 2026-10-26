@@ -33,7 +33,7 @@ def test_auth_and_origin(api):
     with urlopen(
         Request(api + "/v1/catalog", headers={"Authorization": f"Bearer {TOKEN}"}), timeout=5
     ) as response:
-        assert len(json.load(response)["entries"]) == 6
+        assert len(json.load(response)["entries"]) == 9
         assert response.headers["Cache-Control"] == "no-store"
 
 

@@ -34,7 +34,7 @@ def test_studio_bundles_assets_and_catalog(studio):
     with urlopen(
         Request(url + "/ui/catalog", headers={"X-Zynvu-Session": nonce}), timeout=5
     ) as response:
-        assert len(json.load(response)["entries"]) == 6
+        assert len(json.load(response)["entries"]) == 9
 
 
 @pytest.mark.parametrize(
