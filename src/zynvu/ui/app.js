@@ -237,6 +237,14 @@ function modelItem(model) {
     <strong>${escapeHTML(modelName(model.catalog_id))}</strong>
   </li>`;
 }
+function missingCatalogRoles(blueprint) {
+  const modelRoles = ["conversation", "coding", "vision", "asr", "tts"];
+  return blueprint.requirements.capabilities.filter(
+    (role) =>
+      modelRoles.includes(role) &&
+      !state.catalog.some((model) => model.roles.includes(role)),
+  );
+}
 function recommendationCard(rec, index, hardware) {
   const profile = profiles[rec.profile];
   const fit = rec.status !== "not_feasible";
@@ -282,16 +290,39 @@ function renderResults() {
     (rec) => rec.profile === state.selected,
   );
   const viable = chosen.status !== "not_feasible";
+  const missing = missingCatalogRoles(blueprint);
+  const remaining = blueprint.requirements.capabilities.filter(
+    (role) => !missing.includes(role),
+  );
   const title = viable
     ? `Arquitetura ${profiles[state.selected].title.toLowerCase()}`
-    : "O catálogo ainda não cobre este plano";
+    : missing.length
+      ? "O catálogo ainda não cobre todas as capacidades"
+      : "Os requisitos atuais não encontraram uma combinação";
   const description = viable
     ? `${chosen.models.length} modelo(s) · ${blueprint.requirements.context_tokens.toLocaleString("pt-BR")} tokens · ${blueprint.requirements.concurrent ? "carga simultânea" : "troca sequencial"}`
-    : "Revise capacidades, contexto e recursos. O Blueprint registra o motivo de cada restrição.";
+    : missing.length
+      ? `Ainda não temos candidatos para: ${missing.map((role) => labels[role]).join(", ")}. Isso impede o plano completo em qualquer computador. Você pode analisar as outras capacidades separadamente; elas ainda passarão pelos filtros de memória e compatibilidade.`
+      : "Confira os motivos nos perfis e no Blueprint: memória disponível, disco, contexto, licença ou runtime podem limitar a seleção.";
   $("architecture-summary").innerHTML = `
-    <div><h3>${icon("box")} ${title}</h3><p>${description}</p></div>
+    <div><h3>${icon("box")} ${title}</h3><p>${escapeHTML(description)}</p>
+    ${!viable && missing.length && remaining.some((role) => ["conversation", "coding"].includes(role)) ? `<button class="primary-button" id="analyze-supported">Analisar sem ${escapeHTML(missing.map((role) => labels[role]).join(" e "))} ${icon("arrow")}</button>` : ""}</div>
     <button class="primary-button" id="see-blueprint">Ver Blueprint ${icon("arrow")}</button>`;
   $("see-blueprint").addEventListener("click", () => showView("blueprint"));
+  $("analyze-supported")?.addEventListener("click", () => {
+    if (state.busy) return;
+    if (state.stale) {
+      toast(
+        "O briefing mudou. Gere novamente antes de aplicar esta alternativa.",
+      );
+      return;
+    }
+    state.capabilities = new Set(remaining);
+    state.capsDirty = true;
+    renderCapabilities();
+    markStale();
+    $("generate").click();
+  });
   document.querySelectorAll("[data-profile]").forEach((button) =>
     button.addEventListener("click", () => {
       state.selected = button.dataset.profile;
@@ -457,7 +488,9 @@ function bind() {
       );
       status(
         noFit
-          ? "Não encontramos uma combinação completa para estes requisitos. Veja os motivos abaixo."
+          ? missingCatalogRoles(result.blueprint).length
+            ? "O catálogo ainda não cobre todas as capacidades selecionadas. Isso não significa que seu PC não suporta IA local."
+            : "Nenhuma combinação passou pelos filtros atuais. Confira os motivos abaixo."
           : "Sua arquitetura está pronta. Explore os perfis e os detalhes antes de escolher.",
         noFit ? "error" : "",
       );

@@ -72,3 +72,15 @@ Apache-2.0 aprovada pelo usuário. Credenciais/domínio de comércio não fornec
 - Requisitos avançados: erro de JSON, aplicação de contexto personalizado e
   capacidades sem candidatos verificados pela interface. Resultados anteriores
   ficam identificados quando o briefing muda. Não há persistência oculta.
+
+## Recuperação de catálogo incompleto — 2026-10-26
+
+- Selecionar visão/voz bloqueava o plano completo por ausência de candidatos,
+  independentemente da potência do computador. Studio agora diferencia essa
+  limitação de catálogo de restrições de recursos e compatibilidade.
+- Uma ação explícita permite analisar sem as capacidades ausentes, mantendo
+  contexto, política e demais requisitos. Não há remoção silenciosa; o Blueprint
+  passa a refletir o pedido reduzido. Briefings alterados exigem nova análise.
+- Validação com diagnóstico local e contexto de 32K encontrou candidatos para
+  conversa após retirar visão/transcrição. Memória e MCP continuam apenas planos.
+  A matriz automatizada de RAM inclui 4/8 GiB; não equivale a benchmark de inferência.
