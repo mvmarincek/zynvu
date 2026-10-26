@@ -5,4 +5,4 @@ from zynvu.hardware import diagnose
 from zynvu.requirements import parse_goal
 
 __all__ = ["advise", "diagnose", "parse_goal"]
-__version__ = "0.1.0"
+__version__ = "0.2.0"

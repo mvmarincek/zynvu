@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/mvmarincek/zynvu/actions/workflows/ci.yml/badge.svg)](https://github.com/mvmarincek/zynvu/actions/workflows/ci.yml)
 
-**Advisor local de arquitetura de IA — versão inicial 0.1.0.**
+**Advisor local de arquitetura de IA — versão 0.2.0, ZYNVU Studio.**
 
 Descreva um agente, revise os requisitos e receba combinações de modelos que
 respeitam o hardware informado ou diagnosticado. Exporta Blueprint JSON e relatório
@@ -18,8 +18,19 @@ python -m venv .venv
 .\.venv\Scripts\zynvu.exe desktop
 ```
 
-Interface nativa inicial com Tkinter (incluído no instalador oficial do Python para
-Windows); não é ainda um instalador Tauri. Em Linux, Tkinter pode exigir o pacote do SO.
+O comando abre **ZYNVU Studio**, uma interface web local com tema escuro, badges
+de estado, cards de hardware, briefing guiado e comparação visual de arquiteturas.
+Tudo funciona offline, com HTML/CSS/JavaScript incluídos no pacote, sem CDN ou conta.
+O terminal mantém o serviço local aberto; use Ctrl+C para encerrar.
+
+Para abrir manualmente ou escolher uma porta:
+
+```powershell
+.\.venv\Scripts\zynvu.exe desktop --port 8787 --no-open
+```
+
+Acesse `http://127.0.0.1:8787`. A interface usa uma sessão temporária protegida e
+não exige configurar a API de integração. Ainda não há instalador Tauri.
 
 ## CLI
 
@@ -65,7 +76,9 @@ Não é um servidor público ou serviço de produção. Não exponha a porta por
   memória e disco, cargas sequenciais/concorrentes e múltiplos agentes.
 - Três perfis determinísticos, no-fit explícito, Blueprint validado no schema do kit.
 - Política de executores com deny prioritário; HID-only sem fallback de software.
-- Interface desktop inicial, CLI, SDK e API local autenticada.
+- ZYNVU Studio responsivo: briefing, capacidades, diagnóstico, comparação de perfis,
+  catálogo com procedência, requisitos avançados e exportação de JSON/relatório.
+- CLI, SDK e API local autenticada, independente do servidor da interface.
 
 ## Limites desta versão
 

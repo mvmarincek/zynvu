@@ -42,7 +42,11 @@ def main(argv: list[str] | None = None) -> int:
     diagnostic = commands.add_parser("diagnose", help="Diagnosticar hardware local")
     diagnostic.add_argument("--out")
     commands.add_parser("catalog", help="Exibir catálogo offline")
-    commands.add_parser("desktop", help="Abrir interface nativa local")
+    desktop = commands.add_parser("desktop", help="Abrir ZYNVU Studio no navegador local")
+    desktop.add_argument("--port", type=int, default=0)
+    desktop.add_argument(
+        "--no-open", action="store_true", help="Não abrir navegador automaticamente"
+    )
     api = commands.add_parser("serve", help="API loopback autenticada por ZYNVU_API_TOKEN")
     api.add_argument("--port", type=int, default=8765)
     parse = commands.add_parser("parse", help="Revisar requisitos extraídos")
@@ -64,7 +68,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "desktop":
             from zynvu.desktop import launch
 
-            launch()
+            launch(args.port, open_browser=not args.no_open)
         elif args.command == "serve":
             from zynvu.api import serve
 

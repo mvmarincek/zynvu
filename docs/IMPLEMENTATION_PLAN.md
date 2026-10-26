@@ -48,13 +48,27 @@ Apache-2.0 aprovada pelo usuário. Credenciais/domínio de comércio não fornec
   estimador CPU, filtros, ranking, política e Blueprint implementados. Catálogo
   multimodal, medição VRAM e verificação de versões/runtime continuam pendentes;
   não declarar o gate completo da Fase 1 atingido.
-- M2 inicial: interface nativa Tkinter e API local autenticada implementadas;
-  instalador desktop, comparação visual avançada e acessibilidade pendentes.
-- 49 testes, lint e typecheck passaram no Windows. Diagnóstico real e exportação
-  CLI validados. Captura visual da janela falhou por timeout da ferramenta em duas
-  tentativas; revisão visual permanece pendente.
+- M2: ZYNVU Studio web local responsivo, comparação visual, catálogo, diagnóstico,
+  requisitos avançados e exportação implementados; API de integração independente.
+  Instalador desktop e auditoria completa de acessibilidade permanecem pendentes.
+- 55 testes, lint e typecheck passaram no Windows. Diagnóstico real e exportação
+  CLI validados. Studio revisado visualmente em desktop e viewport de 390 px,
+  sem overflow horizontal observado. A revisão anterior do Tkinter foi substituída
+  por esta validação do novo frontend.
 - Wheel/sdist construídos; instalação em ambiente separado, geração de Blueprint
   offline e `pip check` validados. Saída CLI em UTF-8 inclusive em pipes Windows.
 - GitHub: código publicado no repositório público `mvmarincek/zynvu`, com licença
   Apache-2.0 e workflow de CI para Windows/Linux, Python 3.11/3.13.
 - M3/M4/M5 não iniciados. Não habilitar runtime antes de completar gates da Fase 1.
+
+## Evolução visual solicitada pelo usuário
+
+- Substituição da tela Tkinter por Studio com sidebar, badges de estado, identidade
+  escura/verde-lima, fluxo de briefing, cards de hardware e três perfis comparáveis.
+- Rotas Studio/Catálogo/Blueprint funcionais; requisitos avançados e feedback de
+  resultados desatualizados. Assets locais, sem download de fontes ou scripts.
+- Teste visual no navegador: briefing de código, diagnóstico real e comparação
+  concluídos; Blueprint e catálogo navegáveis, sem erros de console observados.
+- Requisitos avançados: erro de JSON, aplicação de contexto personalizado e
+  capacidades sem candidatos verificados pela interface. Resultados anteriores
+  ficam identificados quando o briefing muda. Não há persistência oculta.

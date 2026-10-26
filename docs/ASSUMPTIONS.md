@@ -14,5 +14,6 @@
   prevalecem e devem ser revisados. Não existe chamada oculta a LLM/cloud.
 - Catálogo oficial inicial serve conversação e código. Outras capacidades exigem
   expansão verificada; não serão anunciadas como implementadas.
-- Desktop inicial em Tkinter reutiliza diretamente o SDK Python, reduzindo o
-  empacotamento inicial. API loopback é opcional. Instalador Tauri não entregue.
+- Interface inicial em Tkinter substituída pelo ZYNVU Studio a pedido do usuário:
+  HTML/CSS/JavaScript locais, responsivos e sem build obrigatório. Servidor Python
+  reutiliza o SDK; API de integração permanece independente. Instalador Tauri futuro.
